@@ -22,6 +22,7 @@
   let purchaseChoices;
   let purchaseConfirm;
   let purchaseSelection = new Set();
+  let scrollBeforeKeyboard = 0;
   let toastTimer;
   let undoSnapshot = null;
 
@@ -183,6 +184,12 @@
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
+  function restoreScrollAfterKeyboard() {
+    [0, 120, 360].forEach((delay) => {
+      window.setTimeout(() => window.scrollTo({ top: scrollBeforeKeyboard, left: 0, behavior: "auto" }), delay);
+    });
+  }
+
   async function sharePdf() {
     const labels = openLabels();
     if (labels.length === 0) return;
@@ -253,8 +260,12 @@
         if (!value) return;
         addItem(value);
         input.value = "";
-        input.focus();
+        input.blur();
       });
+      input.addEventListener("focus", () => {
+        scrollBeforeKeyboard = window.scrollY;
+      });
+      input.addEventListener("blur", restoreScrollAfterKeyboard);
       listElement.addEventListener("click", handleListClick);
       clearButton.addEventListener("click", openPurchaseDialog);
       undoButton.addEventListener("click", undoClear);

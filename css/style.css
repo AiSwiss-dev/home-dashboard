@@ -518,14 +518,27 @@ h2 {
 }
 
 .shopping-list-wrap {
+  position: relative;
   min-height: 0;
+  padding-right: 4px;
   overflow: auto;
   overscroll-behavior: contain;
+  scrollbar-color: rgba(65, 92, 118, 0.28) transparent;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+
+.shopping-list-wrap::-webkit-scrollbar { width: 6px; }
+.shopping-list-wrap::-webkit-scrollbar-track { background: transparent; }
+.shopping-list-wrap::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(65, 92, 118, 0.24);
 }
 
 .shopping-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  align-content: start;
   gap: 10px;
   margin: 0;
   padding: 0;
@@ -572,10 +585,13 @@ h2 {
 }
 
 .item-label {
+  display: -webkit-box;
   overflow: hidden;
   margin: 0;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .delete-button {
@@ -922,6 +938,7 @@ kbd {
   .shopping-form input,
   .add-button { min-height: 48px; }
   .shopping-list-wrap { flex: 1; }
+  .shopping-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .shopping-item { min-height: 45px; padding-block: 6px; }
   .footer { padding-top: 7px; }
 }
@@ -990,6 +1007,7 @@ kbd {
   .shopping-heading { margin-bottom: 12px; }
   .shopping-form { margin-bottom: 12px; }
   .shopping-list-wrap { flex: 1; }
+  .shopping-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
   .shopping-item { min-height: 48px; }
   .footer { padding-top: 9px; }
 }
