@@ -10,12 +10,15 @@
     <meta name="apple-mobile-web-app-title" content="Zuhause" />
     <title>Home Dashboard</title>
     <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="css/style.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
     <script src="js/weather.js" defer></script>
     <script src="js/export.js" defer></script>
     <script src="js/shopping.js" defer></script>
     <script src="js/spotify.js" defer></script>
     <script src="js/calendar.js" defer></script>
+    <script src="js/radar.js" defer></script>
     <script src="js/app.js" defer></script>
   </head>
   <body>
@@ -37,7 +40,10 @@
             <article class="card hero-weather" id="primary-weather" aria-labelledby="primary-city">
               <div class="card-heading">
                 <div><p class="eyebrow">Heute · Zuhause</p><h1 id="primary-city">Berg TG</h1></div>
-                <p class="weather-updated" id="weather-updated">Wird geladen</p>
+                <div class="hero-actions">
+                  <p class="weather-updated" id="weather-updated">Wird geladen</p>
+                  <button class="radar-button" id="radar-open" type="button"><span aria-hidden="true">◉</span> Regenradar</button>
+                </div>
               </div>
               <div class="current-weather">
                 <div class="weather-icon weather-icon--hero" id="primary-icon" aria-hidden="true"></div>
@@ -168,6 +174,32 @@
         <textarea class="setup-input setup-textarea" id="calendar-embed-url" placeholder="https://calendar.google.com/calendar/embed?src=…"></textarea>
         <p class="setup-help">Die Adresse bleibt ausschließlich auf diesem Gerät gespeichert.</p>
         <div class="purchase-dialog-actions"><button class="modal-secondary" id="calendar-setup-cancel" type="button">Abbrechen</button><button class="modal-primary" id="calendar-save" type="button">Kalender anzeigen</button></div>
+      </section>
+    </div>
+
+    <div class="purchase-modal radar-modal" id="radar-modal" hidden>
+      <section class="radar-dialog" role="dialog" aria-modal="true" aria-labelledby="radar-title">
+        <div class="radar-heading">
+          <div><p class="eyebrow">Berg TG · Niederschlag</p><h2 id="radar-title">Regenradar</h2></div>
+          <button class="modal-close" id="radar-close" type="button" aria-label="Fenster schließen">×</button>
+        </div>
+        <div class="rain-next-hour" aria-label="Niederschlagsprognose für die nächste Stunde">
+          <div class="rain-forecast-title"><strong>Nächste Stunde</strong><span id="rain-summary">Wird geladen …</span></div>
+          <div class="rain-forecast-grid" id="rain-forecast-grid"></div>
+        </div>
+        <div class="radar-map-wrap">
+          <div class="radar-map" id="radar-map" aria-label="Animierte Niederschlagsradarkarte rund um Berg TG"></div>
+          <div class="radar-loading" id="radar-loading">Radar wird geladen …</div>
+          <div class="radar-time" id="radar-time">--:--</div>
+        </div>
+        <div class="radar-controls">
+          <button id="radar-previous" type="button" aria-label="Vorheriges Radarbild">‹</button>
+          <button class="radar-play" id="radar-play" type="button" aria-label="Radar-Animation pausieren">Ⅱ</button>
+          <button id="radar-next" type="button" aria-label="Nächstes Radarbild">›</button>
+          <span>Radar: letzte Stunde</span>
+          <a href="https://www.rainviewer.com/" target="_blank" rel="noopener">RainViewer</a>
+          <span>· Karte © OpenStreetMap</span>
+        </div>
       </section>
     </div>
   </body>

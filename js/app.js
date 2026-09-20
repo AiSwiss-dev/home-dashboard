@@ -54,6 +54,7 @@
     window.HomeWeather.render();
     window.HomeShopping.init();
     window.HomeCalendar.init();
+    window.HomeRadar.init();
     await window.HomeSpotify.init();
   }
 

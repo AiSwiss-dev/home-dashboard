@@ -1173,6 +1173,61 @@ body {
 .hourly-item strong { font-size: .82rem; }
 .hourly-icon { width: 27px; height: 27px; }
 
+.hero-actions { display: flex; align-items: center; justify-content: flex-end; gap: 7px; flex-wrap: wrap; }
+.hero-actions .weather-updated { flex: 0 0 auto; }
+.radar-button {
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+  color: white;
+  background: rgba(255,255,255,.09);
+  cursor: pointer;
+  font-size: .7rem;
+  font-weight: 720;
+}
+.radar-button span { color: #8ed5ff; }
+
+.radar-dialog {
+  display: flex;
+  flex-direction: column;
+  width: min(900px, calc(100vw - 36px));
+  height: min(720px, calc(100dvh - 36px));
+  min-height: 0;
+  padding: 22px;
+  border: 1px solid rgba(255,255,255,.85);
+  border-radius: 26px;
+  color: var(--ink);
+  background: var(--paper);
+  box-shadow: 0 28px 80px rgba(7, 25, 44, .3);
+}
+.radar-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 14px; }
+.radar-heading .eyebrow { margin-bottom: 3px; color: var(--blue); }
+.rain-next-hour { margin-bottom: 14px; }
+.rain-forecast-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.rain-forecast-title strong { font-size: .78rem; }
+.rain-forecast-title span { color: var(--muted); font-size: .72rem; }
+.rain-forecast-grid { display: grid; grid-template-columns: repeat(4, 1fr); overflow: hidden; border: 1px solid var(--line); border-radius: 14px; }
+.rain-point { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 7px; padding: 8px 10px; font-size: .7rem; }
+.rain-point + .rain-point { border-left: 1px solid var(--line); }
+.rain-point span { color: var(--muted); }
+.rain-point i { display: block; height: 4px; border-radius: 999px; background: #d8e3eb; }
+.rain-point.has-rain i { background: #38a7ec; box-shadow: 0 0 0 3px rgba(56,167,236,.12); }
+.rain-point strong { font-size: .72rem; }
+.radar-map-wrap { position: relative; flex: 1; min-height: 260px; overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: #dbe8ee; }
+.radar-map { width: 100%; height: 100%; }
+.radar-loading { position: absolute; z-index: 500; inset: 0; display: grid; place-items: center; color: var(--muted); background: rgba(239,245,249,.88); font-size: .84rem; font-weight: 700; }
+.radar-loading[hidden] { display: none; }
+.radar-time { position: absolute; z-index: 500; top: 12px; left: 12px; padding: 7px 10px; border-radius: 10px; color: white; background: rgba(9,28,45,.76); font-size: .75rem; font-weight: 750; backdrop-filter: blur(8px); }
+.radar-controls { display: flex; align-items: center; gap: 7px; padding-top: 12px; color: var(--muted); font-size: .66rem; }
+.radar-controls button { width: 34px; height: 34px; padding: 0; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); background: rgba(231,239,245,.8); cursor: pointer; font-size: 1.1rem; }
+.radar-controls .radar-play { color: white; background: var(--blue); }
+.radar-controls span:first-of-type { margin-left: 4px; }
+.radar-controls a { margin-left: auto; color: var(--blue-dark); font-weight: 720; text-decoration: none; }
+body[data-theme="night"] .radar-dialog { border-color: rgba(255,255,255,.08); }
+body[data-theme="night"] .radar-loading { background: rgba(9,21,33,.88); }
+body[data-theme="night"] .radar-controls button { background: rgba(8,20,32,.75); }
+
 .spotify-card {
   min-width: 0;
   overflow: hidden;
@@ -1493,4 +1548,11 @@ body[data-theme="night"] .page-navigation { background: rgba(255,255,255,.1); }
   .page-two-grid .shopping-card,
   .calendar-card { min-height: 520px; }
   .page-two-grid .shopping-list { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 700px) {
+  .radar-dialog { width: calc(100vw - 24px); height: calc(100dvh - 24px); padding: 16px; }
+  .rain-point { grid-template-columns: 1fr; justify-items: center; gap: 3px; padding-inline: 4px; }
+  .rain-point i { width: 70%; }
+  .radar-controls span:last-child { display: none; }
 }
