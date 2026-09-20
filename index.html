@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#10243d" />
+    <meta name="color-scheme" content="light" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Zuhause" />
+    <title>Home Dashboard</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/weather.js" defer></script>
+    <script src="js/export.js" defer></script>
+    <script src="js/shopping.js" defer></script>
+    <script src="js/app.js" defer></script>
+  </head>
+  <body>
+    <main class="dashboard" aria-label="Home Dashboard">
+      <header class="topbar">
+        <div class="brand" aria-label="Home Dashboard">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>Zuhause</span>
+        </div>
+
+        <div class="clock" aria-live="polite">
+          <time class="clock-time" id="clock-time">--:--</time>
+          <time class="clock-date" id="clock-date">Datum wird geladen</time>
+        </div>
+
+        <div class="status-pill" id="weather-status" title="Wetterdaten werden geladen">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span id="weather-status-text">Wetter lädt</span>
+        </div>
+      </header>
+
+      <section class="dashboard-grid">
+        <article class="card hero-weather" id="primary-weather" aria-labelledby="primary-city">
+          <div class="card-heading">
+            <div>
+              <p class="eyebrow">Heute · Zuhause</p>
+              <h1 id="primary-city">Berg TG</h1>
+            </div>
+            <p class="weather-updated" id="weather-updated">Beispieldaten</p>
+          </div>
+
+          <div class="current-weather">
+            <div class="weather-icon weather-icon--hero" id="primary-icon" aria-hidden="true"></div>
+            <div class="temperature-wrap">
+              <p class="temperature"><span id="primary-temp">--</span><sup>°</sup></p>
+              <p class="condition" id="primary-condition">Wetter wird geladen</p>
+              <p class="feels-like" id="primary-detail"></p>
+            </div>
+          </div>
+
+          <div class="forecast" id="forecast" aria-label="5-Tage-Wettervorhersage"></div>
+        </article>
+
+        <section class="side-column" aria-label="Weitere Orte">
+          <article class="card compact-weather" id="weather-rastatt" aria-labelledby="city-rastatt"></article>
+          <article class="card compact-weather" id="weather-monchique" aria-labelledby="city-monchique"></article>
+        </section>
+
+        <article class="card shopping-card" aria-labelledby="shopping-title">
+          <div class="card-heading shopping-heading">
+            <div>
+              <p class="eyebrow">Gemeinsam organisiert</p>
+              <h2 id="shopping-title">Einkaufsliste</h2>
+            </div>
+            <div class="shopping-actions" aria-label="Einkaufsliste exportieren und aufräumen">
+              <p class="item-count" id="item-count">0 offen</p>
+              <button class="action-button" id="share-note-button" type="button" title="Als Notiz teilen">
+                <span aria-hidden="true">↗</span> Notiz
+              </button>
+              <button class="action-button" id="share-pdf-button" type="button" title="Als PDF teilen oder speichern">
+                <span aria-hidden="true">▤</span> PDF
+              </button>
+              <button class="action-button action-button--done" id="clear-completed-button" type="button" title="Abgehakte Artikel entfernen">
+                <span aria-hidden="true">✓</span> Eingekauft
+              </button>
+            </div>
+          </div>
+
+          <form class="shopping-form" id="shopping-form" autocomplete="off">
+            <label class="sr-only" for="shopping-input">Artikel hinzufügen</label>
+            <input
+              id="shopping-input"
+              name="item"
+              type="text"
+              maxlength="80"
+              placeholder="Was fehlt noch?"
+              enterkeyhint="done"
+              required
+            />
+            <button class="add-button" type="submit" aria-label="Artikel hinzufügen">
+              <span aria-hidden="true">+</span>
+              <span>Hinzufügen</span>
+            </button>
+          </form>
+
+          <div class="shopping-list-wrap">
+            <ul class="shopping-list" id="shopping-list" aria-live="polite"></ul>
+            <div class="empty-state" id="empty-state" hidden>
+              <span aria-hidden="true">✓</span>
+              <p>Alles erledigt – die Liste ist leer.</p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <footer class="footer">
+        <span>Home Dashboard · V1 · Wetter: Open-Meteo</span>
+        <span class="footer-hint">Zum Vollbildmodus <kbd>F11</kbd> drücken</span>
+      </footer>
+    </main>
+
+    <div class="toast" id="shopping-toast" role="status" aria-live="polite" hidden>
+      <span id="shopping-toast-text"></span>
+      <button id="undo-button" type="button" hidden>Rückgängig</button>
+    </div>
+
+    <div class="purchase-modal" id="purchase-modal" hidden>
+      <section class="purchase-dialog" role="dialog" aria-modal="true" aria-labelledby="purchase-title" aria-describedby="purchase-description">
+        <div class="purchase-dialog-heading">
+          <div>
+            <p class="eyebrow">Einkauf abschließen</p>
+            <h2 id="purchase-title">Was wurde eingekauft?</h2>
+          </div>
+          <button class="modal-close" id="purchase-close" type="button" aria-label="Fenster schließen">×</button>
+        </div>
+        <p class="purchase-description" id="purchase-description">Wähle alle gekauften Artikel aus. Alles andere bleibt auf der Liste.</p>
+        <ul class="purchase-choices" id="purchase-choices"></ul>
+        <div class="purchase-dialog-actions">
+          <button class="modal-secondary" id="purchase-cancel" type="button">Abbrechen</button>
+          <button class="modal-primary" id="purchase-confirm" type="button" disabled>Auswahl übernehmen</button>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

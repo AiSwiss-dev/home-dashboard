@@ -1,0 +1,12 @@
+{
+  "name": "Zuhause – Home Dashboard",
+  "short_name": "Zuhause",
+  "description": "Tablet-Home-Dashboard mit Live-Wetter und Einkaufsliste",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#edf3f8",
+  "theme_color": "#10243d",
+  "lang": "de"
+}
