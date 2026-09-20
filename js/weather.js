@@ -19,6 +19,14 @@
         { day: "Di", high: 16, low: 9, icon: "rainy" },
         { day: "Mi", high: 17, low: 10, icon: "cloudy" },
         { day: "Do", high: 20, low: 11, icon: "sunny" }
+      ],
+      hourly: [
+        { time: "Jetzt", temp: 18, icon: "partly-cloudy" },
+        { time: "21:00", temp: 16, icon: "partly-cloudy" },
+        { time: "23:00", temp: 14, icon: "cloudy" },
+        { time: "01:00", temp: 13, icon: "cloudy" },
+        { time: "03:00", temp: 12, icon: "cloudy" },
+        { time: "05:00", temp: 11, icon: "partly-cloudy" }
       ]
     },
     secondary: [
@@ -63,6 +71,12 @@
         <div class="forecast-icon weather-icon" aria-hidden="true">${iconSvg(day.icon)}</div>
         <p class="forecast-temps"><span>${day.high}°</span><span class="forecast-low">${day.low}°</span></p>
       </div>`).join("");
+    document.getElementById("hourly-forecast").innerHTML = data.hourly.map((hour) => `
+      <div class="hourly-item">
+        <p>${hour.time}</p>
+        <div class="hourly-icon weather-icon" aria-hidden="true">${iconSvg(hour.icon)}</div>
+        <strong>${hour.temp}°</strong>
+      </div>`).join("");
   }
 
   function renderSecondary(data) {
@@ -94,6 +108,7 @@
       timezone: "auto",
       forecast_days: "5"
     });
+    if (location.primary) params.set("hourly", "temperature_2m,weather_code,is_day");
     return `${API_URL}?${params.toString()}`;
   }
 
@@ -119,12 +134,21 @@
 
   function toPrimary(location, data) {
     const current = weatherInfo(data.current.weather_code, data.current.is_day);
+    const startIndex = Math.max(0, data.hourly.time.findIndex((time) => time >= data.current.time));
+    const hourly = Array.from({ length: 6 }, (_, step) => startIndex + step * 2)
+      .filter((index) => index < data.hourly.time.length)
+      .map((index, position) => ({
+        time: position === 0 ? "Jetzt" : data.hourly.time[index].slice(11, 16),
+        temp: Math.round(data.hourly.temperature_2m[index]),
+        icon: weatherInfo(data.hourly.weather_code[index], data.hourly.is_day[index]).icon
+      }));
     return {
       city: location.city,
       temp: Math.round(data.current.temperature_2m),
       condition: current.condition,
       detail: `Gefühlt ${Math.round(data.current.apparent_temperature)}° · Wind ${Math.round(data.current.wind_speed_10m)} km/h`,
       icon: current.icon,
+      hourly,
       forecast: data.daily.time.map((date, index) => ({
         day: dayLabel(date, index),
         high: Math.round(data.daily.temperature_2m_max[index]),

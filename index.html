@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#10243d" />
-    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" id="theme-color" content="#edf3f8" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Zuhause" />
@@ -14,126 +14,160 @@
     <script src="js/weather.js" defer></script>
     <script src="js/export.js" defer></script>
     <script src="js/shopping.js" defer></script>
+    <script src="js/spotify.js" defer></script>
+    <script src="js/calendar.js" defer></script>
     <script src="js/app.js" defer></script>
   </head>
   <body>
-    <main class="dashboard" aria-label="Home Dashboard">
-      <header class="topbar">
-        <div class="brand" aria-label="Home Dashboard">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span>Zuhause</span>
-        </div>
-
-        <div class="clock" aria-live="polite">
-          <time class="clock-time" id="clock-time">--:--</time>
-          <time class="clock-date" id="clock-date">Datum wird geladen</time>
-        </div>
-
-        <div class="status-pill" id="weather-status" title="Wetterdaten werden geladen">
-          <span class="status-dot" aria-hidden="true"></span>
-          <span id="weather-status-text">Wetter lädt</span>
-        </div>
-      </header>
-
-      <section class="dashboard-grid">
-        <article class="card hero-weather" id="primary-weather" aria-labelledby="primary-city">
-          <div class="card-heading">
-            <div>
-              <p class="eyebrow">Heute · Zuhause</p>
-              <h1 id="primary-city">Berg TG</h1>
+    <div class="page-track" id="page-track">
+      <section class="dashboard-page" data-dashboard-page="0" aria-label="Wetter und Musik">
+        <main class="dashboard">
+          <header class="topbar">
+            <div class="brand" aria-label="Home Dashboard"><span class="brand-mark" aria-hidden="true"></span><span>Zuhause</span></div>
+            <div class="clock" aria-live="polite">
+              <time class="clock-time" id="clock-time">--:--</time>
+              <time class="clock-date" id="clock-date">Datum wird geladen</time>
             </div>
-            <p class="weather-updated" id="weather-updated">Beispieldaten</p>
-          </div>
-
-          <div class="current-weather">
-            <div class="weather-icon weather-icon--hero" id="primary-icon" aria-hidden="true"></div>
-            <div class="temperature-wrap">
-              <p class="temperature"><span id="primary-temp">--</span><sup>°</sup></p>
-              <p class="condition" id="primary-condition">Wetter wird geladen</p>
-              <p class="feels-like" id="primary-detail"></p>
+            <div class="status-pill" id="weather-status" title="Wetterdaten werden geladen">
+              <span class="status-dot" aria-hidden="true"></span><span id="weather-status-text">Wetter lädt</span>
             </div>
-          </div>
+          </header>
 
-          <div class="forecast" id="forecast" aria-label="5-Tage-Wettervorhersage"></div>
-        </article>
+          <section class="dashboard-grid">
+            <article class="card hero-weather" id="primary-weather" aria-labelledby="primary-city">
+              <div class="card-heading">
+                <div><p class="eyebrow">Heute · Zuhause</p><h1 id="primary-city">Berg TG</h1></div>
+                <p class="weather-updated" id="weather-updated">Wird geladen</p>
+              </div>
+              <div class="current-weather">
+                <div class="weather-icon weather-icon--hero" id="primary-icon" aria-hidden="true"></div>
+                <div class="temperature-wrap">
+                  <p class="temperature"><span id="primary-temp">--</span><sup>°</sup></p>
+                  <p class="condition" id="primary-condition">Wetter wird geladen</p>
+                  <p class="feels-like" id="primary-detail"></p>
+                </div>
+              </div>
+              <div class="forecast" id="forecast" aria-label="5-Tage-Wettervorhersage"></div>
+              <div class="hourly-section">
+                <p class="hourly-title">Die nächsten Stunden</p>
+                <div class="hourly-forecast" id="hourly-forecast" aria-label="Stündliche Wettervorhersage für Berg TG"></div>
+              </div>
+            </article>
 
-        <section class="side-column" aria-label="Weitere Orte">
-          <article class="card compact-weather" id="weather-rastatt" aria-labelledby="city-rastatt"></article>
-          <article class="card compact-weather" id="weather-monchique" aria-labelledby="city-monchique"></article>
-        </section>
-
-        <article class="card shopping-card" aria-labelledby="shopping-title">
-          <div class="card-heading shopping-heading">
-            <div>
-              <p class="eyebrow">Gemeinsam organisiert</p>
-              <h2 id="shopping-title">Einkaufsliste</h2>
-            </div>
-            <div class="shopping-actions" aria-label="Einkaufsliste exportieren und aufräumen">
-              <p class="item-count" id="item-count">0 offen</p>
-              <button class="action-button" id="share-note-button" type="button" title="Als Notiz teilen">
-                <span aria-hidden="true">↗</span> Notiz
-              </button>
-              <button class="action-button" id="share-pdf-button" type="button" title="Als PDF teilen oder speichern">
-                <span aria-hidden="true">▤</span> PDF
-              </button>
-              <button class="action-button action-button--done" id="clear-completed-button" type="button" title="Abgehakte Artikel entfernen">
-                <span aria-hidden="true">✓</span> Eingekauft
-              </button>
-            </div>
-          </div>
-
-          <form class="shopping-form" id="shopping-form" autocomplete="off">
-            <label class="sr-only" for="shopping-input">Artikel hinzufügen</label>
-            <input
-              id="shopping-input"
-              name="item"
-              type="text"
-              maxlength="80"
-              placeholder="Was fehlt noch?"
-              enterkeyhint="done"
-              required
-            />
-            <button class="add-button" type="submit" aria-label="Artikel hinzufügen">
-              <span aria-hidden="true">+</span>
-              <span>Hinzufügen</span>
-            </button>
-          </form>
-
-          <div class="shopping-list-wrap">
-            <ul class="shopping-list" id="shopping-list" aria-live="polite"></ul>
-            <div class="empty-state" id="empty-state" hidden>
-              <span aria-hidden="true">✓</span>
-              <p>Alles erledigt – die Liste ist leer.</p>
-            </div>
-          </div>
-        </article>
+            <section class="side-column" aria-label="Weitere Orte und Musik">
+              <div class="weather-pair">
+                <article class="card compact-weather" id="weather-rastatt" aria-labelledby="city-rastatt"></article>
+                <article class="card compact-weather" id="weather-monchique" aria-labelledby="city-monchique"></article>
+              </div>
+              <article class="card spotify-card" aria-labelledby="spotify-title">
+                <div class="spotify-heading">
+                  <div class="spotify-brand"><span class="spotify-logo" aria-hidden="true">♫</span><div><p class="eyebrow">Musik</p><h2 id="spotify-title">Spotify</h2></div></div>
+                  <button class="icon-button" id="spotify-settings" type="button" aria-label="Spotify einrichten" title="Spotify einrichten">⚙</button>
+                </div>
+                <div class="spotify-player">
+                  <div class="spotify-cover" id="spotify-cover" aria-hidden="true"><span>♫</span></div>
+                  <div class="spotify-track"><p class="spotify-track-name" id="spotify-track-name">Noch nicht verbunden</p><p class="spotify-artist" id="spotify-artist">Spotify-App öffnen und Musik starten</p></div>
+                  <div class="spotify-controls" aria-label="Spotify Wiedergabesteuerung">
+                    <button class="spotify-control" id="spotify-previous" type="button" aria-label="Vorheriger Titel" disabled>‹‹</button>
+                    <button class="spotify-control spotify-control--play" id="spotify-play" type="button" aria-label="Wiedergabe" disabled>▶</button>
+                    <button class="spotify-control" id="spotify-next" type="button" aria-label="Nächster Titel" disabled>››</button>
+                  </div>
+                </div>
+                <div class="spotify-footer">
+                  <p class="spotify-status" id="spotify-status">Verbinde dein Spotify-Konto für die Fernsteuerung.</p>
+                  <div class="spotify-actions"><a class="spotify-open" href="https://open.spotify.com/" target="_blank" rel="noopener">Spotify öffnen</a><button class="spotify-connect" id="spotify-connect" type="button">Verbinden</button></div>
+                </div>
+              </article>
+            </section>
+          </section>
+        </main>
       </section>
 
-      <footer class="footer">
-        <span>Home Dashboard · V1 · Wetter: Open-Meteo</span>
-      </footer>
-    </main>
+      <section class="dashboard-page" data-dashboard-page="1" aria-label="Einkaufsliste und Kalender">
+        <main class="dashboard page-two-dashboard">
+          <header class="page-two-topbar">
+            <button class="back-button" type="button" data-go-page="0" aria-label="Zurück zum Wetter">‹</button>
+            <div><p class="eyebrow">Organisation</p><h1>Einkaufen & Termine</h1></div>
+            <div class="page-clock"><time id="page-two-time">--:--</time><span id="night-status">Tagmodus</span></div>
+          </header>
 
-    <div class="toast" id="shopping-toast" role="status" aria-live="polite" hidden>
-      <span id="shopping-toast-text"></span>
-      <button id="undo-button" type="button" hidden>Rückgängig</button>
+          <section class="page-two-grid">
+            <article class="card shopping-card" aria-labelledby="shopping-title">
+              <div class="card-heading shopping-heading">
+                <div><p class="eyebrow">Gemeinsam organisiert</p><h2 id="shopping-title">Einkaufsliste</h2></div>
+                <p class="item-count" id="item-count">0 offen</p>
+              </div>
+              <form class="shopping-form" id="shopping-form" autocomplete="off">
+                <label class="sr-only" for="shopping-input">Artikel hinzufügen</label>
+                <input id="shopping-input" name="item" type="text" maxlength="80" placeholder="Artikel hinzufügen …" enterkeyhint="done" required />
+                <button class="add-button" type="submit" aria-label="Artikel hinzufügen"><span aria-hidden="true">+</span><span>Hinzufügen</span></button>
+              </form>
+              <div class="shopping-list-wrap">
+                <ul class="shopping-list" id="shopping-list" aria-live="polite"></ul>
+                <div class="empty-state" id="empty-state" hidden><span aria-hidden="true">✓</span><p>Alles erledigt – die Liste ist leer.</p></div>
+              </div>
+              <div class="shopping-actions" aria-label="Einkaufsliste exportieren und aufräumen">
+                <button class="action-button" id="share-note-button" type="button"><span aria-hidden="true">↗</span> Notiz</button>
+                <button class="action-button" id="share-pdf-button" type="button"><span aria-hidden="true">▤</span> PDF</button>
+                <button class="action-button action-button--done" id="clear-completed-button" type="button"><span aria-hidden="true">✓</span> Eingekauft</button>
+              </div>
+            </article>
+
+            <article class="card calendar-card" aria-labelledby="calendar-title">
+              <div class="calendar-heading">
+                <div><p class="eyebrow">Google Kalender</p><h2 id="calendar-title">Termine</h2></div>
+                <button class="icon-button" id="calendar-settings" type="button" aria-label="Kalender einrichten" title="Kalender einrichten">⚙</button>
+              </div>
+              <div class="calendar-frame-wrap" id="calendar-frame-wrap">
+                <div class="calendar-empty" id="calendar-empty">
+                  <span class="calendar-icon" aria-hidden="true">20</span>
+                  <h3>Kalender verbinden</h3>
+                  <p>Trage einmalig den Einbettungslink deines Google Kalenders ein.</p>
+                  <button id="calendar-connect" type="button">Jetzt einrichten</button>
+                </div>
+              </div>
+            </article>
+          </section>
+        </main>
+      </section>
     </div>
+
+    <nav class="page-navigation" id="page-navigation" aria-label="Dashboard-Seiten">
+      <button class="page-nav-dot is-active" type="button" data-go-page="0" aria-label="Wetter und Musik" aria-current="page"></button>
+      <button class="page-nav-dot" type="button" data-go-page="1" aria-label="Einkaufsliste und Kalender"></button>
+    </nav>
+
+    <div class="toast" id="shopping-toast" role="status" aria-live="polite" hidden><span id="shopping-toast-text"></span><button id="undo-button" type="button" hidden>Rückgängig</button></div>
 
     <div class="purchase-modal" id="purchase-modal" hidden>
       <section class="purchase-dialog" role="dialog" aria-modal="true" aria-labelledby="purchase-title" aria-describedby="purchase-description">
-        <div class="purchase-dialog-heading">
-          <div>
-            <p class="eyebrow">Einkauf abschließen</p>
-            <h2 id="purchase-title">Was wurde eingekauft?</h2>
-          </div>
-          <button class="modal-close" id="purchase-close" type="button" aria-label="Fenster schließen">×</button>
-        </div>
+        <div class="purchase-dialog-heading"><div><p class="eyebrow">Einkauf abschließen</p><h2 id="purchase-title">Was wurde eingekauft?</h2></div><button class="modal-close" id="purchase-close" type="button" aria-label="Fenster schließen">×</button></div>
         <p class="purchase-description" id="purchase-description">Wähle alle gekauften Artikel aus. Alles andere bleibt auf der Liste.</p>
         <ul class="purchase-choices" id="purchase-choices"></ul>
-        <div class="purchase-dialog-actions">
-          <button class="modal-secondary" id="purchase-cancel" type="button">Abbrechen</button>
-          <button class="modal-primary" id="purchase-confirm" type="button" disabled>Auswahl übernehmen</button>
-        </div>
+        <div class="purchase-dialog-actions"><button class="modal-secondary" id="purchase-cancel" type="button">Abbrechen</button><button class="modal-primary" id="purchase-confirm" type="button" disabled>Artikel auswählen</button></div>
+      </section>
+    </div>
+
+    <div class="purchase-modal" id="spotify-setup-modal" hidden>
+      <section class="purchase-dialog" role="dialog" aria-modal="true" aria-labelledby="spotify-setup-title">
+        <div class="purchase-dialog-heading"><div><p class="eyebrow">Einmalige Einrichtung</p><h2 id="spotify-setup-title">Spotify verbinden</h2></div><button class="modal-close" id="spotify-setup-close" type="button" aria-label="Fenster schließen">×</button></div>
+        <ol class="setup-steps"><li>Im Spotify Developer Dashboard eine App erstellen.</li><li>Diese Weiterleitungsadresse dort exakt eintragen:</li></ol>
+        <div class="copy-row"><input id="spotify-redirect-uri" type="text" readonly aria-label="Spotify Weiterleitungsadresse" /><button id="spotify-copy-redirect" type="button">Kopieren</button></div>
+        <label class="setup-label" for="spotify-client-id">Client-ID deiner Spotify-App</label>
+        <input class="setup-input" id="spotify-client-id" type="text" autocomplete="off" spellcheck="false" placeholder="Client-ID einfügen" />
+        <p class="setup-help">Kein Client-Secret nötig. Die Anmeldung läuft direkt über Spotify.</p>
+        <div class="purchase-dialog-actions"><button class="modal-secondary" id="spotify-setup-cancel" type="button">Abbrechen</button><button class="modal-primary" id="spotify-save-connect" type="button">Speichern & verbinden</button></div>
+      </section>
+    </div>
+
+    <div class="purchase-modal" id="calendar-setup-modal" hidden>
+      <section class="purchase-dialog" role="dialog" aria-modal="true" aria-labelledby="calendar-setup-title">
+        <div class="purchase-dialog-heading"><div><p class="eyebrow">Einmalige Einrichtung</p><h2 id="calendar-setup-title">Google Kalender anzeigen</h2></div><button class="modal-close" id="calendar-setup-close" type="button" aria-label="Fenster schließen">×</button></div>
+        <p class="purchase-description">Kopiere in Google Kalender unter „Kalender integrieren“ den Einbettungscode oder die Einbettungs-URL. Der Kalender muss für die Anzeige freigegeben sein.</p>
+        <label class="setup-label" for="calendar-embed-url">Einbettungscode oder URL</label>
+        <textarea class="setup-input setup-textarea" id="calendar-embed-url" placeholder="https://calendar.google.com/calendar/embed?src=…"></textarea>
+        <p class="setup-help">Die Adresse bleibt ausschließlich auf diesem Gerät gespeichert.</p>
+        <div class="purchase-dialog-actions"><button class="modal-secondary" id="calendar-setup-cancel" type="button">Abbrechen</button><button class="modal-primary" id="calendar-save" type="button">Kalender anzeigen</button></div>
       </section>
     </div>
   </body>
