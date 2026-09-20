@@ -1188,6 +1188,40 @@ body {
 }
 .radar-button span { color: #8ed5ff; }
 
+.radar-inline {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 110px;
+  margin-top: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 18px;
+  background: rgba(219,232,238,.9);
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(8,44,80,.05);
+}
+.radar-inline:focus-visible { outline: 3px solid rgba(255,255,255,.72); outline-offset: 2px; }
+.radar-inline-map { position: absolute; inset: 0; pointer-events: none; }
+.radar-inline-map::after { position: absolute; inset: 0; z-index: 500; content: ""; background: linear-gradient(90deg, rgba(7,39,72,.28), transparent 38%, transparent 70%, rgba(7,39,72,.12)); pointer-events: none; }
+.radar-inline-label,
+.radar-inline-open {
+  position: absolute;
+  z-index: 600;
+  top: 10px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  color: white;
+  background: rgba(8,31,52,.76);
+  backdrop-filter: blur(8px);
+}
+.radar-inline-label { left: 10px; display: grid; gap: 1px; }
+.radar-inline-label span { font-size: .62rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.radar-inline-label strong { font-size: .72rem; }
+.radar-inline-open { right: 10px; font-size: .66rem; font-weight: 720; }
+.radar-inline .leaflet-control-container { display: none; }
+.hourly-section { margin-top: 12px; }
+
 .radar-dialog {
   display: flex;
   flex-direction: column;
@@ -1511,6 +1545,7 @@ body[data-theme="night"] .page-navigation { background: rgba(255,255,255,.1); }
   .weather-pair .compact-icon { width: 58px; height: 58px; }
   .spotify-card { padding: 15px 18px; }
   .spotify-player { margin-block: 10px; }
+  .radar-inline { min-height: 125px; }
   .spotify-status { display: none; }
   .spotify-footer { justify-content: flex-end; }
   .page-two-topbar { margin-bottom: 16px; }
@@ -1530,6 +1565,8 @@ body[data-theme="night"] .page-navigation { background: rgba(255,255,255,.1); }
   .hourly-section { padding-top: 10px; }
   .hourly-title { margin-bottom: 6px; }
   .hourly-item { padding-block: 6px; }
+  .hourly-section { display: none; }
+  .radar-inline { min-height: 120px; margin-top: 10px; }
   .page-two-topbar { margin-bottom: 14px; }
   .page-two-grid { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1.05fr) minmax(0, .95fr); gap: 14px; }
   .page-two-grid .shopping-card { padding: 18px 22px; }
